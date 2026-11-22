@@ -11,8 +11,9 @@ def softmax(scores: list[float]) -> list[float]:
     """
     # Your implementation here
     scores_tensor = torch.as_tensor(scores, dtype = torch.float64)
-    max_value = torch.max(scores_tensor)
-    exp_values = torch.exp(scores_tensor - max_value)
-    sum_exp = torch.sum(exp_values)
-    softmax = exp_values / sum_exp
-    return softmax.tolist()
+    # max_value = torch.max(scores_tensor)
+    # exp_values = torch.exp(scores_tensor - max_value)
+    # sum_exp = torch.sum(exp_values)
+    # softmax = exp_values / sum_exp
+    # return softmax.tolist()
+    return F.softmax(scores_tensor).tolist()
