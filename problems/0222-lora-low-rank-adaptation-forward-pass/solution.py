@@ -1,25 +1,30 @@
-import torch
+import numpy as np
 
 def lora_forward(
-    x: torch.Tensor,
-    W: torch.Tensor,
-    A: torch.Tensor,
-    B: torch.Tensor,
+    x: list[list[float]],
+    W: list[list[float]],
+    A: list[list[float]],
+    B: list[list[float]],
     alpha: float = 1.0
-) -> torch.Tensor:
+) -> list[list[float]]:
     """
-    Compute the LoRA forward pass using PyTorch.
+    Compute the LoRA forward pass.
     
     Args:
-        x: Input tensor (batch_size x in_features)
+        x: Input matrix (batch_size x in_features)
         W: Frozen pretrained weights (in_features x out_features)
         A: LoRA matrix A (rank x out_features)
         B: LoRA matrix B (in_features x rank)
         alpha: LoRA scaling factor
         
     Returns:
-        Output tensor (batch_size x out_features)
+        Output matrix (batch_size x out_features)
     """
     # Your code here
-    r = A.shape[0]
-    return x @ W + alpha / r * x @ B @ A
+    X = np.asarray(x)
+    W = np.asarray(W)
+    A = np.asarray(A)
+    B = np.asarray(B)
+
+    r = B.shape[1]
+    return (X @ W + (alpha / r) * (X @ B @ A)).tolist()
