@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T22:01:53.046Z",
+  "generated_at": "2026-11-24T22:34:36.623Z",
   "items": {
     "problem:22": {
       "kind": "problem",
@@ -91,6 +91,19 @@
       "last_pushed_at": "2026-11-24T22:01:52.391Z",
       "language": "python",
       "lines": 44
+    },
+    "problem:389": {
+      "kind": "problem",
+      "id": "389",
+      "title": "Mixture of Experts Load Balancing Loss",
+      "difficulty": "medium",
+      "category": "Deep Learning",
+      "url": "https://www.deep-ml.com/problems/389",
+      "path": "problems/0389-mixture-of-experts-load-balancing-loss",
+      "first_solved_at": "2026-11-24T22:34:35.889Z",
+      "last_pushed_at": "2026-11-24T22:34:35.889Z",
+      "language": "python",
+      "lines": 23
     }
   }
 }
