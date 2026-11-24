@@ -1,43 +1,44 @@
-import numpy as np
+import torch
+import math
 
-def temperature_decay(
+def temperature_decay_pytorch(
     schedule_type: str,
     initial_temp: float,
     current_step: int,
     total_steps: int,
     final_temp: float = 0.01,
     decay_rate: float = 0.95
-) -> float:
+) -> torch.Tensor:
     """
-    Compute temperature at current training step using decay schedule.
+    Compute temperature at current training step using PyTorch.
     
-    Temperature controls randomness in neural network outputs:
-    - High temperature: More random, more exploration
-    - Low temperature: More deterministic, more exploitation
+    Same as NumPy version but returns torch.Tensor.
+    Useful for integration with PyTorch training loops.
     
     Args:
-        schedule_type: Decay schedule type
-          'linear': Steady linear decrease
-          'exponential': Fast early decay, slow later
-          'cosine': Smooth cosine curve
-          'constant': No decay
+        schedule_type: 'linear', 'exponential', 'cosine', or 'constant'
         initial_temp: Starting temperature
-        current_step: Current training step (0 to total_steps)
-        total_steps: Total number of training steps
-        final_temp: Minimum temperature (floor)
-        decay_rate: Decay rate per step (for exponential)
+        current_step: Current training step
+        total_steps: Total number of steps
+        final_temp: Minimum temperature
+        decay_rate: Decay rate for exponential
     
     Returns:
-        Temperature value at current step
+        Temperature as torch.Tensor (scalar)
+        
+    Hints:
+        - Use torch.tensor() to create tensors
+        - Use torch.cos() for cosine
+        - Use torch.clamp() to enforce minimum
+        - Use .item() to extract Python float if needed
     """
     # Your code here
-    if total_steps <= 0:
-        raise ValueError("Total steps must be positive")
+    current_step = torch.tensor(current_step, dtype=torch.float32)
     if schedule_type == "linear":
-        return initial_temp + current_step * (final_temp - initial_temp) / total_steps
+        return initial_temp + (final_temp - initial_temp) / total_steps * current_step
     elif schedule_type == "exponential":
-        return max(initial_temp * decay_rate ** current_step, final_temp)
+        return torch.clamp(initial_temp * decay_rate ** current_step, min = final_temp)
     elif schedule_type == "cosine":
-        return final_temp + 0.5 * (initial_temp - final_temp) * (1 + np.cos(np.pi * current_step / total_steps))
-    elif schedule_type == 'constant':
-        return initial_temp
+        return final_temp + 0.5 * (initial_temp - final_temp) * (1 + torch.cos(torch.pi * current_step / total_steps))
+    elif schedule_type == "constant":
+        return torch.tensor(initial_temp)
